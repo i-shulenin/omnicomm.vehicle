@@ -1,31 +1,5 @@
 <?php
 
-$credentials = [
-  'login' => 'rudemoru',
-  'password' => 'rudemo123456',
-];
-$authorizationUrl = 'https://online.omnicomm.ru/auth/login?jwt=1';
-
-$curl = curl_init();
-
-curl_setopt($curl, CURLOPT_URL, $authorizationUrl);
-curl_setopt($curl, CURLOPT_POST, 1);
-curl_setopt($curl, CURLOPT_POSTFIELDS, http_build_query($credentials, '', '&'));
-curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
-
-$header[0] = 'Authorization: JWT '.json_decode(curl_exec($curl))->{'jwt'};
-
-curl_close($curl);
-
-$treeVehicleUrl = 'https://online.omnicomm.ru/ls/api/v2/tree/vehicle';
-
-$curl = curl_init();
-
-curl_setopt($curl, CURLOPT_URL, $treeVehicleUrl);
-curl_setopt($curl, CURLOPT_HTTPHEADER, $header);
-curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
-
-//$treeVehicles = json_decode(curl_exec($curl));
 $treeVehicles = json_decode('{
   "id": 4101,
   "parentGroupId": null,
@@ -43,10 +17,10 @@ $treeVehicles = json_decode('{
       "terminal_id": 203028739
     },
     {
-      "uuid": "ba10ce0e-3613-379d-a5b8-7383faac29b1",
-      "name": "ДГУ_4",
+      "uuid": "1828d132-fcad-3be1-a14e-1bc48ceea4eb",
+      "name": "ДГУ_5",
       "terminal_type": "FAS",
-      "terminal_id": 203028739
+      "terminal_id": 203028815
     }
   ],
   "autocheck_id": 4101,
@@ -81,71 +55,124 @@ $treeVehicles = json_decode('{
       ],
       "autocheck_id": 5662,
       "children": [{
-        "id": 5663,
-        "parentGroupId": 4101,
-        "name": "TPMS",
         "objects": [{
-          "uuid": "e9db7638-ca9c-316e-8794-11ba4c996dbd",
-          "name": "TPMS",
-          "terminal_type": "FAS",
-          "terminal_id": 203031366
-        }],
-        "autocheck_id": 5663,
+            "uuid": "c949b995-c3d7-3946-9767-3c5b73a64349",
+            "name": "Камаз (CAN)",
+            "terminal_type": "FAS",
+            "terminal_id": 203026865
+          },
+          {
+            "uuid": "765ed63d-e831-305c-81db-af99180365a6",
+            "name": "Камаз Самосвал (CAN)",
+            "terminal_type": "FAS",
+            "terminal_id": 203028996
+          }
+        ],
         "children": []
       }]
+    },
+    {
+      "id": 5663,
+      "parentGroupId": 4101,
+      "name": "TPMS",
+      "objects": [{
+        "uuid": "e9db7638-ca9c-316e-8794-11ba4c996dbd",
+        "name": "TPMS",
+        "terminal_type": "FAS",
+        "terminal_id": 203031366
+      }],
+      "autocheck_id": 5663,
+      "children": []
     },
     {
       "id": 5664,
       "parentGroupId": 4101,
       "name": "CAN bus",
-      "objects": [{
-          "uuid": "c949b995-c3d7-3946-9767-3c5b73a64349",
-          "name": "Камаз (CAN)",
-          "terminal_type": "FAS",
-          "terminal_id": 203026865
-        },
-        {
-          "uuid": "765ed63d-e831-305c-81db-af99180365a6",
-          "name": "Камаз Самосвал (CAN)",
-          "terminal_type": "FAS",
-          "terminal_id": 203028996
-        }
-      ],
+      "objects": [],
       "autocheck_id": 5664,
       "children": []
     },
     {
-      "id": 5690,
+      "id": 5667,
       "parentGroupId": 4101,
-      "name": "AGRO",
+      "name": "АТЗ",
       "objects": [{
-          "uuid": "b87f53a5-0874-30f8-bc20-922bb2a25a7d",
-          "name": "Трактор 1",
-          "terminal_type": "FAS",
-          "terminal_id": 236012050
-        },
-        {
-          "uuid": "7abd30e2-9298-3f5b-88ec-b5eff4003a10",
-          "name": "Трактор 2",
-          "terminal_type": "FAS",
-          "terminal_id": 236019119
-        },
-        {
-          "uuid": "3022978c-2377-370d-ac50-12dc32d98a6a",
-          "name": "Трактор",
-          "terminal_type": "FAS",
-          "terminal_id": 236036827
-        }
-      ],
-      "autocheck_id": 5690,
+        "uuid": "0bf23869-2c22-3594-85df-2d1217e98ee6",
+        "name": "АТЗ",
+        "terminal_type": "FTC",
+        "terminal_id": 216002404
+      }],
+      "autocheck_id": 5667,
+      "children": []
+    },
+    {
+      "id": 5862,
+      "parentGroupId": 4101,
+      "name": "Fuel per kg",
+      "objects": [{
+        "uuid": "d240a4bb-4a8b-3c69-9332-3f7b13be68ee",
+        "name": "ТС_КГ",
+        "terminal_type": "FAS",
+        "terminal_id": 203031689
+      }],
+      "autocheck_id": 5862,
       "children": []
     }
   ]
 }');
 
-curl_close($curl);
+$existingVehicles = [
+  [
+    'c949b995-c3d7-3946-9767-3c5b73a64349',
+    203026865,
+  ],
+  [
+    '765ed63d-e831-305c-81db-af99180365a6',
+    203028996,
+  ],
+  [
+    'd8d513ea-416c-3027-86de-059895c5a84b',
+    265001525,
+  ],
+  [
+    '26804259-2e29-3300-ad1f-4852df7800ee',
+    265004218,
+  ],
+  [
+    '1d6f21e0-0d37-3b42-8f2f-fa65ec72eed9',
+    336003771,
+  ],
+  [
+    '2a4914a2-ae92-3b05-9a57-da11b513d5a9',
+    336003821,
+  ],
+  [
+    'e9db7638-ca9c-316e-8794-11ba4c996dbd',
+    203031366,
+  ],
+  [
+    '0bf23869-2c22-3594-85df-2d1217e98ee6',
+    216002404,
+  ],
+  [
+    'd240a4bb-4a8b-3c69-9332-3f7b13be68ee',
+    203031689,
+  ],
+  [
+    '3c635eff-77ae-3c09-bf5b-410c64f2ac13',
+    202002469,
+  ],
+  [
+    'ba10ce0e-3613-379d-a5b8-7383faac29b1',
+    203028739,
+  ],
+  [
+    '1828d132-fcad-3be1-a14e-1bc48ceea4eb',
+    203028815,
+  ],
+];
 
-function flatVehicle($vehicles)
+function flatVehicle($vehicles): array
 {
   $result = [];
   $childrens = $vehicles->{'children'};
@@ -159,19 +186,12 @@ function flatVehicle($vehicles)
 }
 
 $flatVehicles = flatVehicle($treeVehicles);
-$data = [
-['e9db7638-ca9c-316e-8794-11ba4c996dbd', 203031366,],
-['1d6f21e0-0d37-3b42-8f2f-fa65ec72eed9', 336003771,],
-['2a4914a2-ae92-3b05-9a57-da11b513d5a9', 336003821,],
-['d8d513ea-416c-3027-86de-059895c5a84b', 265001525,],
-['26804259-2e29-3300-ad1f-4852df7800ee', 265004218,],
-];
-
-$vehicles = array_unique(array_map(function ($item)
+$uniqueVehicles = array_unique(array_map(function ($item)
 {
+
   return [$item->{'uuid'}, $item->{'terminal_id'}];
 }, $flatVehicles), SORT_REGULAR);
 
-//var_dump($vehicles);
-//var_dump(array_intersect($data, $vehicles));
-var_dump(array_diff_ukey($data, $vehicles));
+var_dump($flatVehicles);
+var_dump($existingVehicles);
+var_dump($uniqueVehicles);
